@@ -9,26 +9,73 @@ public class JuliaPlot extends JFrame {
    public JuliaPlot()
    {
       super( "Julia Set" );
-      setSize(400,430);
+      setSize(600,630);
       setVisible( true );
    }
    public void paint( Graphics g ){
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		    // only change code below this line
-        int x, y, h, k, t;
-        int iRed, iGreen, iBlue, aiRed, aiGreen, aiBlue;//integer RGB
-        x = 0;  y = 0; h = 0; k = 0; t = 0;
+        double c1 = 0.345;
+        double c2 = 0.565;
+        double   limit = 10;
 
+        int ired, igreen, iblue,redAjust, greenAjust, blueAjust;
 
-        for (x = 0;x <400;x++){
-          for (y = 0; y < 430;y++){
-              iRed = 155; iGreen = 255; iBlue = 155;
-              g.setColor(new Color(iRed,iGreen,iBlue));
-              g.drawLine(x,y,x,y);
+        int ared[] = new int[256];
+        int agreen[] = new int[256];
+	int ablue[] = new int[256];
+	int i;
 
-          }
+	int rval = 0;
+	    	int  j,p;
+		int k = 0;
+	    	double x,y,x1,x2,y1,z;
+		double id, jd;
+		int Iterations = 1000;
+      g.setColor(new Color(255,255,255));
+			g.fillRect(0,0,600,630);
+// build colors
+ired = 0; igreen = 100; iblue = 0;
+redAjust = 0; greenAjust = -10; blueAjust = 0;
+// change the above
+  for (i = 0; i < 256;i++){
+      ared[i] = ired;
+    	agreen[i] = igreen;
+			ablue[i] = iblue;
+			ired = ired+redAjust;
+			igreen = igreen+greenAjust;
+			iblue = iblue+blueAjust;
+		      if (ired > 255) ired = 0;if (ired < 0) ired = 255;
+          if (igreen > 255) igreen = 0;if (igreen < 0) igreen = 255;
+		      if (iblue > 255) iblue = 0;if (iblue < 0) iblue =  255;
+	}
+		//	g.setColor(new Color(255,255,255));
+		//	g.fillRect(0,0,500,500);
+		for (j = 0 ; j < 600 ; j++) {
+			jd = (double) j;
+			y1 = (300 - jd) / 150;
+				for (i = 0; i < 600; i++){
+					id = (double) i;
+					x1 = (id - 300) / 150;
+					x = x1;
+					y = y1;
 
-      }//end for
+					z = 0.0;
+					k = 0;
+					do {
+						x2 = (x * x) - (y * y) + c1;
+						y = (2 * x * y) + c2;
+						x = x2;
+						z = (x * x) + (y * y);
+						k++;
+					}while ((k < Iterations) & (z < 4.0));
+						if (k > limit) {
+							if (k > 255) k = 255;
+								g.setColor(new Color(ared[k],agreen[k],ablue[k]));
+							g.drawLine(i,j,i,j);
+						}
+	    	}//end for i
+        }//end for j
       // only change code above this line
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
